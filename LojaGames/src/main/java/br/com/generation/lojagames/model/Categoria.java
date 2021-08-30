@@ -22,8 +22,8 @@ public class Categoria {
 	
 	private String tipo;
 	
-	@OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("tipo")
+	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("categoria")
 	private List<Produto> produto;
 
 	public long getId() {
