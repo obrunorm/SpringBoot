@@ -15,35 +15,34 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity                                             		
-@Table(name = "tb_produtos")	
+@Table(name = "tb_produto")	
 public class Produto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private long id;
 	
-	@NotNull(message = "Nome é obrigatório!")                                       										
+	@NotNull                                       										
 	private String nome;
 	
-	public String getResumo() {
-		return resumo;
-	}
-
-	public void setResumo(String resumo) {
-		this.resumo = resumo;
-	}
-
-	@Size(max=500)
-	private String resumo;
+	@Size(min = 5, max = 500)
+	private String descricao;
 	
-	@NotNull(message = "Preço é obrigatório!")
-	@Positive(message = "O preço deve ser maior do que zero!")
+	@NotNull
+	private String console;
+	
+	@NotNull
+	@Positive
 	private BigDecimal preco;
 	
 	@ManyToOne
 	@JsonIgnoreProperties("produto")
-	private Categoria categoria1;
+	private Categoria categoria;
 	
+	@ManyToOne
+	@JsonIgnoreProperties("produto")
+	private Usuario usuario;
+
 	public long getId() {
 		return id;
 	}
@@ -60,7 +59,22 @@ public class Produto {
 		this.nome = nome;
 	}
 
-		
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getConsole() {
+		return console;
+	}
+
+	public void setConsole(String console) {
+		this.console = console;
+	}
+
 	public BigDecimal getPreco() {
 		return preco;
 	}
@@ -70,14 +84,19 @@ public class Produto {
 	}
 
 	public Categoria getCategoria() {
-		return categoria1;
+		return categoria;
 	}
 
 	public void setCategoria(Categoria categoria) {
-		this.categoria1 = categoria;
+		this.categoria = categoria;
 	}
 
-	@ManyToOne
-	@JsonIgnoreProperties("produto")
-	private Categoria categoria;
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 }
