@@ -11,31 +11,36 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+//Habilita a segurança
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Override
+	
+	//Sobreescreve de dados
+	@Override 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
 
+	//codifica a senha
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	//Tipo void não rertorna nada, ele só define o que precisa de autentificação e o que não precisa
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/usuarios/logar").permitAll()
-			.antMatchers("/usuarios/cadastrar").permitAll()
+			.antMatchers("/usuarios/logar").permitAll() //Não precisa de autorização ---- "/***" libera todos os usuarios
+			.antMatchers("/usuarios/cadastrar").permitAll() //Não precisa de autorização
 			.anyRequest().authenticated()
 			.and().httpBasic()
 			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and().cors()
-			.and().csrf().disable();
+			.and().cors() //Cross origin
+			.and().csrf().disable(); //Desabilita porque já está gerando token na hora do login
 	}
 }
